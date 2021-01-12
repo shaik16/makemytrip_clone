@@ -1,8 +1,82 @@
 import React, { Component } from 'react';
+import Validator from '../Validation/Validation';
 import './Signup.css';
 
 export class Signup extends Component {
+	state = {
+		name: '',
+		email: '',
+		password: '',
+		confirmPassword: '',
+		errors: {
+			name: '',
+			email: '',
+			password: '',
+			confirmPassword: '',
+		},
+		validation: {
+			name: 'none',
+			email: 'none',
+			password: 'none',
+			confirmPassword: 'none',
+		},
+	};
+
+	handleChange = async (event) => {
+		const { name, value } = event.target;
+		let result;
+
+		if (name === 'confirmPassword') {
+			result = await Validator({ [name]: value, password: this.state.password });
+		} else {
+			result = await Validator({ [name]: value });
+		}
+
+		this.setState({ [name]: value }, () => {
+			if (result !== 'success') {
+				this.setState((previousState) => ({
+					errors: {
+						...previousState.errors,
+						[name]: result,
+					},
+					validation: {
+						...previousState.validation,
+						[name]: 'is-invalid',
+					},
+				}));
+			} else {
+				this.setState((previousState) => ({
+					errors: {
+						...previousState.errors,
+						[name]: '',
+					},
+					validation: {
+						...previousState.validation,
+						[name]: 'is-valid',
+					},
+				}));
+			}
+		});
+	};
+
+	handleSubmit = (event) => {
+		event.preventDefault();
+	};
+
 	render() {
+		const {
+			name: nameError,
+			email: emailError,
+			password: passwordError,
+			confirmPassword: confirmPasswordError,
+		} = this.state.errors;
+		const {
+			name: invalidName,
+			email: invalidEmail,
+			password: invalidPassword,
+			confirmPassword: invalidConfirmPassword,
+		} = this.state.validation;
+
 		return (
 			<div
 				class='modal fade'
@@ -25,19 +99,23 @@ export class Signup extends Component {
 								aria-label='Close'></button>
 						</div>
 						<div class='modal-body'>
-							<form>
+							<form onSubmit={this.handleSubmit}>
 								<div class='mb-3'>
 									<label for='name' class='form-label'>
 										Name
 									</label>
 									<input
 										type='text'
-										class='form-control'
+										class={`form-control  ${invalidName}`}
 										id='name'
-										aria-describedby='emailHelp'
+										aria-describedby='nameHelp'
 										name='name'
 										placeholder='Enter your name'
+										onChange={this.handleChange}
 									/>
+									<div id='nameFeedback' class='invalid-feedback'>
+										{nameError}
+									</div>
 								</div>
 								<div class='mb-3'>
 									<label for='email' class='form-label'>
@@ -45,12 +123,16 @@ export class Signup extends Component {
 									</label>
 									<input
 										type='email'
-										class='form-control'
+										class={`form-control  ${invalidEmail}`}
 										id='email'
 										aria-describedby='emailHelp'
 										name='email'
 										placeholder='Enter your email'
+										onChange={this.handleChange}
 									/>
+									<div id='emailFeedback' class='invalid-feedback'>
+										{emailError}
+									</div>
 									<div id='emailHelp' class='form-text'>
 										We'll never share your email with anyone else.
 									</div>
@@ -61,23 +143,31 @@ export class Signup extends Component {
 									</label>
 									<input
 										type='password'
-										class='form-control'
+										class={`form-control  ${invalidPassword}`}
 										id='password'
 										name='password'
 										placeholder='Enter your password'
+										onChange={this.handleChange}
 									/>
+									<div id='passFeedback' class='invalid-feedback'>
+										{passwordError}
+									</div>
 								</div>
 								<div class='mb-3'>
-									<label for='password' class='form-label'>
+									<label for='confirmPassword' class='form-label'>
 										Confirm Password
 									</label>
 									<input
 										type='password'
-										class='form-control'
+										class={`form-control  ${invalidConfirmPassword}`}
 										id='confirmPassword'
 										name='confirmPassword'
 										placeholder='Re-enter your password'
+										onChange={this.handleChange}
 									/>
+									<div id='passFeedback' class='invalid-feedback'>
+										{confirmPasswordError}
+									</div>
 								</div>
 								<button type='submit' class='btn btn-primary px-5'>
 									Signup
