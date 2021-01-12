@@ -5,21 +5,10 @@ import Login from './components/Login/Login';
 import Signup from './components/Signup/Signup';
 
 class App extends Component {
-	state = {
-		popup: false,
-	};
-
-	handleClick = () => {
-		this.setState({
-			popup: !this.state.popup,
-		});
-		console.log('clicked');
-	};
-
 	render() {
 		return (
 			<div className='App'>
-				<Header handleClick={this.handleClick} />
+				<Header />
 				<Login />
 				<Signup />
 			</div>

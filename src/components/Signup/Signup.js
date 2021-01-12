@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Validator from '../Validation/Validation';
+import apiRequest from '../apiRequest/apiRequest';
 import './Signup.css';
 
 export class Signup extends Component {
@@ -14,16 +15,23 @@ export class Signup extends Component {
 			password: '',
 			confirmPassword: '',
 		},
+		isValid: false,
 		validation: {
 			name: 'none',
 			email: 'none',
 			password: 'none',
 			confirmPassword: 'none',
 		},
+		authError: '',
+		authStatus: false,
+		successMessage: '',
+		successStatus: false,
+		buttonStatus: 'signup',
 	};
 
 	handleChange = async (event) => {
 		const { name, value } = event.target;
+		const { name: nameState, email, password, confirmPassword } = this.state;
 		let result;
 
 		if (name === 'confirmPassword') {
@@ -43,6 +51,7 @@ export class Signup extends Component {
 						...previousState.validation,
 						[name]: 'is-invalid',
 					},
+					isValid: false,
 				}));
 			} else {
 				this.setState((previousState) => ({
@@ -55,15 +64,61 @@ export class Signup extends Component {
 						[name]: 'is-valid',
 					},
 				}));
+				if (
+					nameState.length > 0 &&
+					email.length > 0 &&
+					password.length > 0 &&
+					confirmPassword.length > 0
+				) {
+					this.setState({
+						isValid: true,
+					});
+				}
 			}
 		});
 	};
 
-	handleSubmit = (event) => {
-		event.preventDefault();
+	handleSubmit = async (event) => {
+		try {
+			event.preventDefault();
+			this.setState({
+				buttonStatus: 'please wait ...',
+			});
+			const { name, email, password, confirmPassword } = this.state;
+			const result = await apiRequest({
+				method: 'post',
+				url: '/signup',
+				data: {
+					name,
+					email,
+					password,
+					confirmPassword,
+				},
+			});
+
+			this.setState({
+				successStatus: true,
+				successMessage: result.data.message,
+			});
+		} catch (err) {
+			console.log(err.response);
+			this.setState({
+				authStatus: true,
+				authError: err.response.data.message,
+				buttonStatus: 'signup',
+			});
+
+			setTimeout(() => {
+				this.setState({
+					authStatus: false,
+					authError: '',
+				});
+			}, 4000);
+		}
 	};
 
 	render() {
+		const { isValid, authError, authStatus, buttonStatus } = this.state;
 		const {
 			name: nameError,
 			email: emailError,
@@ -79,109 +134,124 @@ export class Signup extends Component {
 
 		return (
 			<div
-				class='modal fade'
+				className='modal fade'
 				id='signUpBackdrop'
 				data-bs-backdrop='static'
 				data-bs-keyboard='false'
 				tabindex='-1'
 				aria-labelledby='signUpBackdropLabel'
 				aria-hidden='true'>
-				<div class='modal-dialog modal-dialog-centered'>
-					<div class='modal-content'>
-						<div class='modal-header'>
-							<h5 class='modal-title' id='signUpBackdropLabel'>
+				<div className='modal-dialog modal-dialog-centered'>
+					<div className='modal-content'>
+						<div className='modal-header'>
+							<h5 className='modal-title' id='signUpBackdropLabel'>
 								Signup
 							</h5>
 							<button
 								type='button'
-								class='btn-close'
+								className='btn-close'
 								data-bs-dismiss='modal'
 								aria-label='Close'></button>
 						</div>
-						<div class='modal-body'>
-							<form onSubmit={this.handleSubmit}>
-								<div class='mb-3'>
-									<label for='name' class='form-label'>
-										Name
-									</label>
-									<input
-										type='text'
-										class={`form-control  ${invalidName}`}
-										id='name'
-										aria-describedby='nameHelp'
-										name='name'
-										placeholder='Enter your name'
-										onChange={this.handleChange}
-									/>
-									<div id='nameFeedback' class='invalid-feedback'>
-										{nameError}
-									</div>
+						{this.state.successStatus ? (
+							<div class='alert alert-success' role='alert'>
+								{this.state.successMessage}
+							</div>
+						) : (
+							<div className='modal-body'>
+								<div
+									className='alert alert-danger'
+									role='alert'
+									style={{ display: `${authStatus ? 'block' : 'none'}` }}>
+									{authError}
 								</div>
-								<div class='mb-3'>
-									<label for='email' class='form-label'>
-										Email
-									</label>
-									<input
-										type='email'
-										class={`form-control  ${invalidEmail}`}
-										id='email'
-										aria-describedby='emailHelp'
-										name='email'
-										placeholder='Enter your email'
-										onChange={this.handleChange}
-									/>
-									<div id='emailFeedback' class='invalid-feedback'>
-										{emailError}
+								<form onSubmit={this.handleSubmit}>
+									<div className='mb-3'>
+										<label for='name' className='form-label'>
+											Name
+										</label>
+										<input
+											type='text'
+											className={`form-control  ${invalidName}`}
+											id='name'
+											aria-describedby='nameHelp'
+											name='name'
+											placeholder='Enter your name'
+											onChange={this.handleChange}
+										/>
+										<div id='nameFeedback' className='invalid-feedback'>
+											{nameError}
+										</div>
 									</div>
-									<div id='emailHelp' class='form-text'>
-										We'll never share your email with anyone else.
+									<div className='mb-3'>
+										<label for='email' className='form-label'>
+											Email
+										</label>
+										<input
+											type='email'
+											className={`form-control  ${invalidEmail}`}
+											id='email'
+											aria-describedby='emailHelp'
+											name='email'
+											placeholder='Enter your email'
+											onChange={this.handleChange}
+										/>
+										<div id='emailFeedback' className='invalid-feedback'>
+											{emailError}
+										</div>
+										<div id='emailHelp' className='form-text'>
+											We'll never share your email with anyone else.
+										</div>
 									</div>
-								</div>
-								<div class='mb-3'>
-									<label for='password' class='form-label'>
-										Password
-									</label>
-									<input
-										type='password'
-										class={`form-control  ${invalidPassword}`}
-										id='password'
-										name='password'
-										placeholder='Enter your password'
-										onChange={this.handleChange}
-									/>
-									<div id='passFeedback' class='invalid-feedback'>
-										{passwordError}
+									<div className='mb-3'>
+										<label for='password' className='form-label'>
+											Password
+										</label>
+										<input
+											type='password'
+											className={`form-control  ${invalidPassword}`}
+											id='password'
+											name='password'
+											placeholder='Enter your password'
+											onChange={this.handleChange}
+										/>
+										<div id='passFeedback' className='invalid-feedback'>
+											{passwordError}
+										</div>
 									</div>
-								</div>
-								<div class='mb-3'>
-									<label for='confirmPassword' class='form-label'>
-										Confirm Password
-									</label>
-									<input
-										type='password'
-										class={`form-control  ${invalidConfirmPassword}`}
-										id='confirmPassword'
-										name='confirmPassword'
-										placeholder='Re-enter your password'
-										onChange={this.handleChange}
-									/>
-									<div id='passFeedback' class='invalid-feedback'>
-										{confirmPasswordError}
+									<div className='mb-3'>
+										<label for='confirmPassword' className='form-label'>
+											Confirm Password
+										</label>
+										<input
+											type='password'
+											className={`form-control  ${invalidConfirmPassword}`}
+											id='confirmPassword'
+											name='confirmPassword'
+											placeholder='Re-enter your password'
+											onChange={this.handleChange}
+										/>
+										<div id='passFeedback' className='invalid-feedback'>
+											{confirmPasswordError}
+										</div>
 									</div>
-								</div>
-								<button type='submit' class='btn btn-primary px-5'>
-									Signup
-								</button>
-								<a
-									href='.'
-									className='float-end mt-1'
-									data-bs-toggle='modal'
-									data-bs-target='#loginBackdrop'
-									data-bs-dismiss='modal'>
-									Already have an account! login
-								</a>
-							</form>
-						</div>
+									<button
+										type='submit'
+										className='btn btn-primary px-5'
+										disabled={isValid ? false : true}>
+										{buttonStatus}
+									</button>
+									<a
+										href='.'
+										className='float-end mt-1'
+										data-bs-toggle='modal'
+										data-bs-target='#loginBackdrop'
+										data-bs-dismiss='modal'>
+										Already have an account! login
+									</a>
+								</form>
+							</div>
+						)}
 					</div>
 				</div>
 			</div>
