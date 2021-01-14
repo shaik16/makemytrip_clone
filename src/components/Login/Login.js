@@ -108,7 +108,7 @@ class Login extends Component {
 				id='loginBackdrop'
 				data-bs-backdrop='static'
 				data-bs-keyboard='false'
-				tabindex='-1'
+				tabIndex='-1'
 				aria-labelledby='loginBackdropLabel'
 				aria-hidden='true'>
 				<div className='modal-dialog modal-dialog-centered'>
@@ -119,25 +119,25 @@ class Login extends Component {
 							</h5>
 							<button
 								type='button'
-								class='btn-close'
+								className='btn-close'
 								data-bs-dismiss='modal'
 								aria-label='Close'></button>
 						</div>
 						{this.state.isLoggedIn ? (
-							<div class='alert alert-success' role='alert'>
+							<div className='alert alert-success' role='alert'>
 								successfully logged in
 							</div>
 						) : (
-							<div class='modal-body'>
+							<div className='modal-body'>
 								<div
-									class='alert alert-danger'
+									className='alert alert-danger'
 									role='alert'
 									style={{ display: `${authStatus ? 'block' : 'none'}` }}>
 									{authError}
 								</div>
 								<form onSubmit={this.handleSubmit}>
 									<div className='mb-3'>
-										<label for='email' className='form-label'>
+										<label htmlFor='email' className='form-label'>
 											Email
 										</label>
 										<input
@@ -158,7 +158,7 @@ class Login extends Component {
 										</div>
 									</div>
 									<div className='mb-3'>
-										<label for='password' className='form-label'>
+										<label htmlFor='password' className='form-label'>
 											Password
 										</label>
 										<input

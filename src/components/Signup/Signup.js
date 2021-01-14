@@ -138,7 +138,7 @@ export class Signup extends Component {
 				id='signUpBackdrop'
 				data-bs-backdrop='static'
 				data-bs-keyboard='false'
-				tabindex='-1'
+				tabIndex='-1'
 				aria-labelledby='signUpBackdropLabel'
 				aria-hidden='true'>
 				<div className='modal-dialog modal-dialog-centered'>
@@ -154,7 +154,7 @@ export class Signup extends Component {
 								aria-label='Close'></button>
 						</div>
 						{this.state.successStatus ? (
-							<div class='alert alert-success' role='alert'>
+							<div className='alert alert-success' role='alert'>
 								{this.state.successMessage}
 							</div>
 						) : (
@@ -167,7 +167,7 @@ export class Signup extends Component {
 								</div>
 								<form onSubmit={this.handleSubmit}>
 									<div className='mb-3'>
-										<label for='name' className='form-label'>
+										<label htmlFor='name' className='form-label'>
 											Name
 										</label>
 										<input
@@ -184,7 +184,7 @@ export class Signup extends Component {
 										</div>
 									</div>
 									<div className='mb-3'>
-										<label for='email' className='form-label'>
+										<label htmlFor='email' className='form-label'>
 											Email
 										</label>
 										<input
@@ -204,7 +204,7 @@ export class Signup extends Component {
 										</div>
 									</div>
 									<div className='mb-3'>
-										<label for='password' className='form-label'>
+										<label htmlFor='password' className='form-label'>
 											Password
 										</label>
 										<input
@@ -220,7 +220,7 @@ export class Signup extends Component {
 										</div>
 									</div>
 									<div className='mb-3'>
-										<label for='confirmPassword' className='form-label'>
+										<label htmlFor='confirmPassword' className='form-label'>
 											Confirm Password
 										</label>
 										<input
