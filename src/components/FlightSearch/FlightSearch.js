@@ -1,33 +1,36 @@
 import React, { Component } from 'react';
 import './FlightSearch.css';
-
 export class FlightSearch extends Component {
-	state = {
-		isSearchOpen: false,
-	};
+	// state = {
+	// 	isSearchOpen: false,
+	// };
 
-	openSearchBox = () => {
-		if (!this.state.isSearchOpen) {
-			document.addEventListener('click', this.closeSearchBox, false);
-		} else {
-			document.removeEventListener('click', this.closeSearchBox, false);
-		}
-		this.setState((previousState) => ({
-			isSearchOpen: !previousState.isSearchOpen,
-		}));
-	};
+	// openSearchBox = () => {
+	// 	if (!this.state.isSearchOpen) {
+	// 		document.addEventListener('click', this.closeSearchBox, false);
+	// 	} else {
+	// 		document.removeEventListener('click', this.closeSearchBox, false);
+	// 	}
+	// 	this.setState((previousState) => ({
+	// 		isSearchOpen: !previousState.isSearchOpen,
+	// 	}));
+	// };
 
-	closeSearchBox = (e) => {
-		if (this.node.contains(e.target)) {
-			return;
-		}
-		this.openSearchBox();
+	// closeSearchBox = (e) => {
+	// 	if (this.node.contains(e.target)) {
+	// 		return;
+	// 	}
+	// 	this.openSearchBox();
+	// };
+
+	handleSubmit = (event) => {
+		event.preventDefault();
 	};
 
 	render() {
 		return (
-			<div>
-				<div className='container  bg-light mt-5 rounded-3 px-5'>
+			<div className='flight-search-section'>
+				<div className='container  bg-light  rounded-3 px-5'>
 					<div className='container w-25 position-relative bg-light border rounded-3 flight-icon'>
 						<div
 							className='pt-2 d-flex 
@@ -46,7 +49,7 @@ export class FlightSearch extends Component {
 							<h6>Flights</h6>
 						</div>
 					</div>
-					<div className='form-check pt-2 pb-3 ms-2'>
+					{/* <div className='form-check pt-2 pb-3 ms-2'>
 						<input
 							className='form-check-input'
 							type='radio'
@@ -135,7 +138,63 @@ export class FlightSearch extends Component {
 								<h2 className='fw-bold'>3 Travellers</h2>
 							</div>
 						</div>
-					</div>
+					</div> */}
+					<form onSubmit={this.handleSubmit} className='pb-5 pt-5'>
+						<div class='row g-2'>
+							<div class='col-md'>
+								<div class='form-floating'>
+									<select
+										class='form-select'
+										id='floatingSelectGrid'
+										aria-label='Floating label select example'>
+										<option selected>Bengaluru</option>
+										<option value='1'>Bengaluru</option>
+										<option value='2'>GOA</option>
+										<option value='3'>MUMBAI</option>
+									</select>
+									<label for='floatingSelectGrid'>FROM</label>
+								</div>
+							</div>
+							<div class='col-md'>
+								<div class='form-floating'>
+									<select
+										class='form-select'
+										id='floatingSelectGrid'
+										aria-label='Floating label select example'>
+										<option selected>GOA</option>
+										<option value='1'>Bengaluru</option>
+										<option value='2'>GOA</option>
+										<option value='3'>MUMBAI</option>
+									</select>
+									<label for='floatingSelectGrid'>TO</label>
+								</div>
+							</div>
+							<div class='col-md'>
+								<div class='form-floating'>
+									<input type='date' />
+								</div>
+							</div>
+							<div class='col-md'>
+								<div class='form-floating'>
+									<select
+										class='form-select'
+										id='floatingSelectGrid'
+										aria-label='Floating label select example'>
+										<option selected>1</option>
+										<option value='2'>2</option>
+										<option value='3'>3</option>
+										<option value='4'>4</option>
+									</select>
+									<label for='floatingSelectGrid'>No of travellers</label>
+								</div>
+							</div>
+						</div>
+						<div className='container d-flex justify-content-center position-relative search-btn'>
+							<button type='submit' className='btn btn-primary px-5'>
+								SEARCH
+							</button>
+						</div>
+					</form>
 				</div>
 			</div>
 		);
