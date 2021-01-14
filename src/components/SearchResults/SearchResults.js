@@ -2,6 +2,8 @@ import React, { Component } from "react";
 import "./SearchResult.css";
 
 import currentDate from "../CurrentDate";
+import arrowIcon from "../../images/right-arrow.png";
+import checkedIcon from "../../images/checked.png";
 
 export class SearchResults extends Component {
   constructor(props) {
@@ -19,7 +21,7 @@ export class SearchResults extends Component {
           <div className="container">
             <div className="row">
               <div className="col-md-1"></div>
-              <div className="col-md-2 text-primary rounded py-2">
+              <div className="col-md-2 col-6 text-primary rounded py-2">
                 <div class="form-floating">
                   <select
                     class="form-select"
@@ -34,7 +36,7 @@ export class SearchResults extends Component {
                   <label for="floatingSelectGrid">FROM</label>
                 </div>
               </div>
-              <div className="col-md-2 text-primary rounded py-2">
+              <div className="col-md-2 col-6 text-primary rounded py-2">
                 <div class="form-floating">
                   <select
                     class="form-select"
@@ -49,7 +51,7 @@ export class SearchResults extends Component {
                   <label for="floatingSelectGrid">TO</label>
                 </div>
               </div>
-              <div className="col-md-2 text-primary rounded py-2">
+              <div className="col-md-2 col-6 text-primary rounded py-2">
                 <div class="form-floating">
                   <input
                     type="date"
@@ -59,7 +61,7 @@ export class SearchResults extends Component {
                   <label for="floatingSelectGrid">Departure Date</label>
                 </div>
               </div>
-              <div className="col-md-2 text-primary rounded py-2">
+              <div className="col-md-2 col-6 text-primary rounded py-2">
                 <div class="form-floating">
                   <select
                     class="form-select"
@@ -74,12 +76,11 @@ export class SearchResults extends Component {
                   <label for="floatingSelectGrid">No of travellers</label>
                 </div>
               </div>
-              <div className="col-md-2 text-primary rounded py-2 pt-3">
+              <div className="col-md-2 col-12 text-center text-primary rounded py-2 pt-3">
                 <button type="submit" className="btn btn-primary px-5 ">
                   SEARCH
                 </button>
               </div>
-              {/* <div className="col-md-1"></div> */}
             </div>
           </div>
         </div>
@@ -94,34 +95,45 @@ export class SearchResults extends Component {
                 aria-expanded="true"
                 aria-controls="collapseOne"
               >
-                <div className="d-flex justify-content-around align-items-center w-100">
-                  <div className="airline d-flex justify-content-between">
-                    <img
-                      src="https://media.glassdoor.com/sqll/2006190/indigo-airlines-squarelogo-1585307627941.png"
-                      alt="log"
-                      width="40"
-                      height="40"
-                    />
-                    <div className="d-flex flex-column px-2">
-                      <p>indigo</p>
-                      <p>6E-529</p>
+                <div className="row" style={{ width: "100%" }}>
+                  <div className="col-lg-2 .d-none .d-sm-block"></div>
+                  <div className="col-lg-2 col-sm-3">
+                    <div className="airline d-flex">
+                      <img
+                        src="https://media.glassdoor.com/sqll/2006190/indigo-airlines-squarelogo-1585307627941.png"
+                        alt="log"
+                        width="40"
+                        height="40"
+                      />
+                      <div
+                        className="flex-column"
+                        style={{ marginLeft: "1rem" }}
+                      >
+                        <p>Indigo</p>
+                        <p>6E-529</p>
+                      </div>
                     </div>
                   </div>
-                  <div className="time-estimate d-flex  justify-content-between">
+                  <div className="col-lg-2 col-sm-3 d-none d-sm-block">
                     <div className="departure-time">
                       <h5>20:45</h5>
                       <p>Bengaluru</p>
                     </div>
+                  </div>
+                  <div className="col-lg-2 col-sm-3 d-none d-sm-block">
                     <div className="duration">
                       <p>01 hr 20 mins</p>
                       <hr />
                       <p>Non-stop </p>
                     </div>
+                  </div>
+                  <div className="col-lg-2 col-sm-2 d-none d-sm-block">
                     <div className="arrival-time">
                       <h5>22:10</h5>
                       <p>Bengaluru</p>
                     </div>
                   </div>
+                  <div className="col-lg-2 d-none"></div>
                 </div>
               </button>
             </h2>
@@ -133,6 +145,37 @@ export class SearchResults extends Component {
             >
               <div className="accordion-body">
                 <div className="container">
+                  <div className="row mb-4 d-lg-none d-xl-block d-md-none d-lg-block d-sm-none d-xl-none text-center">
+                    <div className="col-4">
+                      <h5>20:45</h5>
+                      <p>Bengaluru</p>
+                    </div>
+                    <div className="col-3">
+                      <img
+                        src={arrowIcon}
+                        alt="Arrow"
+                        style={{
+                          width: "50px",
+                          height: "50px",
+                        }}
+                      ></img>
+                    </div>
+                    <div className="col-5">
+                      <div className="arrival-time">
+                        <h5>22:10</h5>
+                        <p>Bengaluru</p>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="row mb-4 d-lg-none d-xl-block d-md-none d-lg-block d-sm-none d-xl-none">
+                    <div className="col-12 text-center">
+                      <div className="duration">
+                        <p>01 hr 20 mins</p>
+                        <hr />
+                        <p>Non-stop </p>
+                      </div>
+                    </div>
+                  </div>
                   <div className="row mb-4">
                     <div className="col-lg-12">
                       <div className="row">
@@ -148,9 +191,9 @@ export class SearchResults extends Component {
                           </span>
                           <div className="economy d-flex justify-content-between">
                             <div className="list-items">
-                              <div>
+                              <div className="mt-1 mb-1">
                                 <img
-                                  src={`${process.env.PUBLIC_URL}/check.svg`}
+                                  src={checkedIcon}
                                   width="15"
                                   height="15"
                                   alt="tick"
@@ -159,9 +202,9 @@ export class SearchResults extends Component {
                                   Cabin baggage 7 Kgs, Check-in baggage included
                                 </p>
                               </div>
-                              <div>
+                              <div className="mt-1 mb-1">
                                 <img
-                                  src={`${process.env.PUBLIC_URL}/check.svg`}
+                                  src={checkedIcon}
                                   width="15"
                                   height="15"
                                   alt="tick"
@@ -170,9 +213,9 @@ export class SearchResults extends Component {
                                   Cancellation fee starting ₹ 3,500
                                 </p>
                               </div>
-                              <div>
+                              <div className="mt-1 mb-1">
                                 <img
-                                  src={`${process.env.PUBLIC_URL}/check.svg`}
+                                  src={checkedIcon}
                                   width="15"
                                   height="15"
                                   alt="tick"
@@ -181,9 +224,9 @@ export class SearchResults extends Component {
                                   Date change fee starting ₹ 3,000
                                 </p>
                               </div>
-                              <div>
+                              <div className="mt-1 mb-1">
                                 <img
-                                  src={`${process.env.PUBLIC_URL}/check.svg`}
+                                  src={checkedIcon}
                                   width="15"
                                   height="15"
                                   alt="tick"
@@ -196,11 +239,11 @@ export class SearchResults extends Component {
                           </div>
                         </div>
                         <div className="col-md-2">
-                          <h2 className="pt-5">
+                          <h2 className="pt-2 text-center">
                             <strong> &#8377; 10,665</strong>
                           </h2>
                         </div>
-                        <div className="col-md-4 text-center pt-5">
+                        <div className="col-md-4 text-center pt-3">
                           <button className="btn btn-primary book-now">
                             BOOK NOW
                           </button>
@@ -224,9 +267,9 @@ export class SearchResults extends Component {
                           </span>
                           <div className="economy d-flex justify-content-between">
                             <div className="list-items">
-                              <div>
+                              <div className="mt-1 mb-1">
                                 <img
-                                  src={`${process.env.PUBLIC_URL}/check.svg`}
+                                  src={checkedIcon}
                                   width="15"
                                   height="15"
                                   alt="tick"
@@ -235,9 +278,9 @@ export class SearchResults extends Component {
                                   Cabin baggage 7 Kgs, Check-in baggage included
                                 </p>
                               </div>
-                              <div>
+                              <div className="mt-1 mb-1">
                                 <img
-                                  src={`${process.env.PUBLIC_URL}/check.svg`}
+                                  src={checkedIcon}
                                   width="15"
                                   height="15"
                                   alt="tick"
@@ -246,9 +289,9 @@ export class SearchResults extends Component {
                                   Cancellation fee starting ₹ 3,500
                                 </p>
                               </div>
-                              <div>
+                              <div className="mt-1 mb-1">
                                 <img
-                                  src={`${process.env.PUBLIC_URL}/check.svg`}
+                                  src={checkedIcon}
                                   width="15"
                                   height="15"
                                   alt="tick"
@@ -257,9 +300,9 @@ export class SearchResults extends Component {
                                   Date change fee starting ₹ 3,000
                                 </p>
                               </div>
-                              <div>
+                              <div className="mt-1 mb-1">
                                 <img
-                                  src={`${process.env.PUBLIC_URL}/check.svg`}
+                                  src={checkedIcon}
                                   width="15"
                                   height="15"
                                   alt="tick"
@@ -272,11 +315,11 @@ export class SearchResults extends Component {
                           </div>
                         </div>
                         <div className="col-md-2">
-                          <h2 className="pt-5">
+                          <h2 className="pt-2 text-center">
                             <strong> &#8377; 10,665</strong>
                           </h2>
                         </div>
-                        <div className="col-md-4 text-center pt-5">
+                        <div className="col-md-4 text-center pt-3">
                           <button className="btn btn-primary book-now">
                             BOOK NOW
                           </button>
