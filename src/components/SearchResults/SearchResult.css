@@ -1,49 +1,49 @@
 .search-head {
-	background: linear-gradient(to right, #061627, #0f325a, #134175);
+  background: linear-gradient(to right, #061627, #0f325a, #134175);
 }
 
 .head-info-box {
-	background-color: rgba(77, 171, 253, 0.1);
-	margin-left: 1rem;
-	/* margin-top: 1rem; */
+  background-color: rgba(77, 171, 253, 0.1);
+  margin-left: 1rem;
+  /* margin-top: 1rem; */
 }
 
 .search-body {
-	padding-top: 30px;
-	padding-bottom: 30px;
+  padding-top: 30px;
+  padding-bottom: 30px;
 }
 
 .search-item {
-	background-color: white;
+  background-color: white;
 }
 
 p {
-	margin: 0;
+  margin: 0;
 }
 h1,
 h2,
 h6,
 h5,
 hr {
-	margin: 0;
+  margin: 0;
 }
 
 .time-estimate {
-	width: 300px;
+  width: 400px;
 }
 
 .accordion-item {
-	width: 70%;
-	margin: auto;
+  width: 90%;
+  margin: auto;
 }
 
 .book-now {
-	height: 40px;
+  height: 40px;
 }
 
 @media (max-width: 768px) {
-	.accordion-item {
-		width: 90%;
-		margin: auto;
-	}
+  .accordion-item {
+    width: 90%;
+    margin: auto;
+  }
 }
