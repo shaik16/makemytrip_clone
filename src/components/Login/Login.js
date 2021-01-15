@@ -1,107 +1,116 @@
 import React, { Component } from 'react';
-import Validator from '../Validation/Validation';
-import apiRequest from '../apiRequest/apiRequest';
 import './Login.css';
+import { connect } from 'react-redux';
+import { onSubmit, validateChange } from '../store/actions/loginAction';
 
 class Login extends Component {
-	state = {
-		email: '',
-		password: '',
-		errors: {
-			email: '',
-			password: '',
-		},
-		isValid: false,
-		validation: {
-			email: 'none',
-			password: 'none',
-		},
-		buttonStatus: 'Login',
-		authError: '',
-		authStatus: false,
-		isLoggedIn: false,
-	};
+	// state = {
+	// 	email: '',
+	// 	password: '',
+	// 	errors: {
+	// 		email: '',
+	// 		password: '',
+	// 	},
+	// 	isValid: false,
+	// 	validation: {
+	// 		email: 'none',
+	// 		password: 'none',
+	// 	},
+	// 	buttonStatus: 'Login',
+	// 	authError: '',
+	// 	authStatus: false,
+	// 	isLoggedIn: false,
+	// };
 
-	handleChange = async (event) => {
-		const { name, value } = event.target;
-		const { email, password } = this.state;
-		const result = await Validator({ [name]: value });
+	// handleChange = async (event) => {
+	// 	const { name, value } = event.target;
+	// 	const { email, password } = this.state;
+	// 	const result = await Validator({ [name]: value });
 
-		this.setState({ [name]: value }, () => {
-			if (result !== 'success') {
-				this.setState((previousState) => ({
-					errors: {
-						...previousState.errors,
-						[name]: result,
-					},
-					validation: {
-						...previousState.validation,
-						[name]: 'is-invalid',
-					},
-					isValid: false,
-				}));
-			} else {
-				this.setState((previousState) => ({
-					errors: {
-						...previousState.errors,
-						[name]: '',
-					},
-					validation: {
-						...previousState.validation,
-						[name]: 'is-valid',
-					},
-				}));
-				if (email.length > 0 && password.length > 0) {
-					this.setState({
-						isValid: true,
-					});
-				}
-			}
-		});
-	};
+	// 	this.setState({ [name]: value }, () => {
+	// 		if (result !== 'success') {
+	// 			this.setState((previousState) => ({
+	// 				errors: {
+	// 					...previousState.errors,
+	// 					[name]: result,
+	// 				},
+	// 				validation: {
+	// 					...previousState.validation,
+	// 					[name]: 'is-invalid',
+	// 				},
+	// 				isValid: false,
+	// 			}));
+	// 		} else {
+	// 			this.setState((previousState) => ({
+	// 				errors: {
+	// 					...previousState.errors,
+	// 					[name]: '',
+	// 				},
+	// 				validation: {
+	// 					...previousState.validation,
+	// 					[name]: 'is-valid',
+	// 				},
+	// 			}));
+	// 			if (email.length > 0 && password.length > 0) {
+	// 				this.setState({
+	// 					isValid: true,
+	// 				});
+	// 			}
+	// 		}
+	// 	});
+	// };
 
-	handleSubmit = async (event) => {
-		try {
-			event.preventDefault();
-			this.setState({
-				buttonStatus: 'please wait ...',
-			});
-			const { email, password } = this.state;
-			const result = await apiRequest({
-				method: 'post',
-				url: '/login',
-				data: {
-					email,
-					password,
-				},
-			});
+	// handleSubmit = async (event) => {
+	// 	try {
+	// 		event.preventDefault();
+	// 		this.setState({
+	// 			buttonStatus: 'please wait ...',
+	// 		});
+	// 		const { email, password } = this.state;
+	// 		const result = await apiRequest({
+	// 			method: 'post',
+	// 			url: '/login',
+	// 			data: {
+	// 				email,
+	// 				password,
+	// 			},
+	// 		});
 
-			const { id, accessToken } = result.data;
-			localStorage.setItem('user_id', id);
-			localStorage.setItem('accessToken', accessToken);
-			this.setState({
-				isLoggedIn: true,
-			});
-		} catch (err) {
-			console.log(err.response);
-			this.setState({
-				authStatus: true,
-				authError: err.response.data.message,
-				buttonStatus: 'login',
-			});
-			setTimeout(() => {
-				this.setState({
-					authStatus: false,
-					authError: '',
-				});
-			}, 4000);
-		}
-	};
+	// 		const { id, accessToken } = result.data;
+	// 		localStorage.setItem('user_id', id);
+	// 		localStorage.setItem('accessToken', accessToken);
+	// 		this.setState({
+	// 			isLoggedIn: true,
+	// 		});
+	// 	} catch (err) {
+	// 		console.log(err.response);
+	// 		this.setState({
+	// 			authStatus: true,
+	// 			authError: err.response.data.message,
+	// 			buttonStatus: 'login',
+	// 		});
+	// 		setTimeout(() => {
+	// 			this.setState({
+	// 				authStatus: false,
+	// 				authError: '',
+	// 			});
+	// 		}, 4000);
+	// 	}
+	// };
 
 	render() {
-		const { isValid, buttonStatus, authError, authStatus } = this.state;
-		const { email: emailError, password: passwordError } = this.state.errors;
-		const { email: invalidEmail, password: invalidPassword } = this.state.validation;
+		const {
+			email,
+			password,
+			errors,
+			validation,
+			isValid,
+			buttonStatus,
+			authError,
+			authStatus,
+			isLoggedIn,
+		} = this.props;
+
 		return (
 			<div
 				className='modal fade'
@@ -123,7 +132,7 @@ class Login extends Component {
 								data-bs-dismiss='modal'
 								aria-label='Close'></button>
 						</div>
-						{this.state.isLoggedIn ? (
+						{isLoggedIn ? (
 							<div className='alert alert-success' role='alert'>
 								successfully logged in
 							</div>
@@ -135,23 +144,23 @@ class Login extends Component {
 									style={{ display: `${authStatus ? 'block' : 'none'}` }}>
 									{authError}
 								</div>
-								<form onSubmit={this.handleSubmit}>
+								<form onSubmit={(event) => event.preventDefault()}>
 									<div className='mb-3'>
 										<label htmlFor='email' className='form-label'>
 											Email
 										</label>
 										<input
 											type='email'
-											className={`form-control  ${invalidEmail}`}
+											className={`form-control  ${validation.email}`}
 											id='email'
 											name='email'
 											aria-describedby='emailHelp'
 											placeholder='Enter your email'
-											onChange={this.handleChange}
+											onChange={(event) => this.props.validateChange(event)}
 											autoComplete='off'
 										/>
 										<div id='emailFeedback' className='invalid-feedback'>
-											{emailError}
+											{errors.email}
 										</div>
 										<div id='emailHelp' className='form-text'>
 											We'll never share your email with anyone else.
@@ -163,18 +172,18 @@ class Login extends Component {
 										</label>
 										<input
 											type='password'
-											className={`form-control  ${invalidPassword}`}
+											className={`form-control  ${validation.password}`}
 											id='password'
 											name='password'
 											placeholder='Enter your password'
-											onChange={this.handleChange}
+											onChange={(event) => this.props.validateChange(event)}
 										/>
 										<div id='passwordFeedback' className='invalid-feedback'>
-											{passwordError}
+											{errors.password}
 										</div>
 									</div>
 									<button
-										type='submit'
+										onClick={() => this.props.submit(email, password)}
 										className='btn btn-primary px-5'
 										disabled={isValid ? false : true}>
 										{buttonStatus}
@@ -197,4 +206,24 @@ class Login extends Component {
 	}
 }
 
-export default Login;
+const mapStateToProps = (state) => {
+	return {
+		email: state.login.email,
+		password: state.login.email,
+		errors: state.login.errors,
+		validation: state.login.validation,
+		isValid: state.login.isValid,
+		buttonStatus: state.login.buttonStatus,
+		authError: state.login.authError,
+		authStatus: state.login.authStatus,
+		isLoggedIn: state.login.isLoggedIn,
+	};
+};
+const mapDispatchToProps = (dispatch) => {
+	return {
+		validateChange: (event) => dispatch(validateChange(event)),
+		submit: (email, password) => dispatch(onSubmit(email, password)),
+	};
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Login);
