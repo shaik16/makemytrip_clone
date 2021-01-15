@@ -1,25 +1,11 @@
 import React, { Component } from 'react';
 import './SearchResult.css';
-
-import currentDate from '../CurrentDate';
 import arrowIcon from '../../images/right-arrow.png';
 import checkedIcon from '../../images/checked.png';
 import { connect } from 'react-redux';
-import {
-	airportDataRequest,
-	searchFlights,
-	searchHandleChange,
-	searchHandleSubmit,
-} from '../store/actions/searchAction';
+import { searchFlights, searchHandleChange } from '../store/actions/searchAction';
 
 export class SearchResults extends Component {
-	// constructor(props) {
-	// 	super(props);
-
-	// 	this.state = {
-	// 		dateToday: currentDate(),
-	// 	};
-	// }
 	componentDidMount() {
 		this.props.searchFlights(this.props.from, this.props.to, this.props.date);
 	}
