@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import './App.css';
-// import FlightSearch from './components/FlightSearch/FlightSearch';
+import { BrowserRouter as Router, Route } from 'react-router-dom';
+import FlightSearch from './components/FlightSearch/FlightSearch';
 import Header from './components/Header/Header';
 import Login from './components/Login/Login';
 import SearchResults from './components/SearchResults/SearchResults';
@@ -10,11 +11,13 @@ class App extends Component {
 	render() {
 		return (
 			<div className='App'>
-				<Header />
-				<Login />
-				<Signup />
-				{/* <FlightSearch /> */}
-				<SearchResults />
+				<Router>
+					<Header />
+					<Login />
+					<Signup />
+					<Route path='/' exact component={FlightSearch} />
+					<Route path='/flight_search' component={SearchResults} />
+				</Router>
 			</div>
 		);
 	}

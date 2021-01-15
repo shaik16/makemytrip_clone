@@ -17,6 +17,8 @@ export class Signup extends Component {
 			buttonStatus,
 			authError,
 			authStatus,
+			successMessage,
+			successStatus,
 		} = this.props;
 
 		return (
@@ -40,9 +42,9 @@ export class Signup extends Component {
 								data-bs-dismiss='modal'
 								aria-label='Close'></button>
 						</div>
-						{this.state.successStatus ? (
+						{successStatus ? (
 							<div className='alert alert-success' role='alert'>
-								{this.state.successMessage}
+								{successMessage}
 							</div>
 						) : (
 							<div className='modal-body'>
@@ -159,6 +161,8 @@ const mapStateToProps = (state) => {
 		authError: state.signup.authError,
 		authStatus: state.signup.authStatus,
 		isLoggedIn: state.signup.isLoggedIn,
+		successStatus: state.signup.successStatus,
+		successMessage: state.signup.successMessage,
 	};
 };
 
