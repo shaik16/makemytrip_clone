@@ -4,100 +4,6 @@ import { connect } from 'react-redux';
 import { onSubmit, validateChange } from '../store/actions/loginAction';
 
 class Login extends Component {
-	// state = {
-	// 	email: '',
-	// 	password: '',
-	// 	errors: {
-	// 		email: '',
-	// 		password: '',
-	// 	},
-	// 	isValid: false,
-	// 	validation: {
-	// 		email: 'none',
-	// 		password: 'none',
-	// 	},
-	// 	buttonStatus: 'Login',
-	// 	authError: '',
-	// 	authStatus: false,
-	// 	isLoggedIn: false,
-	// };
-
-	// handleChange = async (event) => {
-	// 	const { name, value } = event.target;
-	// 	const { email, password } = this.state;
-	// 	const result = await Validator({ [name]: value });
-
-	// 	this.setState({ [name]: value }, () => {
-	// 		if (result !== 'success') {
-	// 			this.setState((previousState) => ({
-	// 				errors: {
-	// 					...previousState.errors,
-	// 					[name]: result,
-	// 				},
-	// 				validation: {
-	// 					...previousState.validation,
-	// 					[name]: 'is-invalid',
-	// 				},
-	// 				isValid: false,
-	// 			}));
-	// 		} else {
-	// 			this.setState((previousState) => ({
-	// 				errors: {
-	// 					...previousState.errors,
-	// 					[name]: '',
-	// 				},
-	// 				validation: {
-	// 					...previousState.validation,
-	// 					[name]: 'is-valid',
-	// 				},
-	// 			}));
-	// 			if (email.length > 0 && password.length > 0) {
-	// 				this.setState({
-	// 					isValid: true,
-	// 				});
-	// 			}
-	// 		}
-	// 	});
-	// };
-
-	// handleSubmit = async (event) => {
-	// 	try {
-	// 		event.preventDefault();
-	// 		this.setState({
-	// 			buttonStatus: 'please wait ...',
-	// 		});
-	// 		const { email, password } = this.state;
-	// 		const result = await apiRequest({
-	// 			method: 'post',
-	// 			url: '/login',
-	// 			data: {
-	// 				email,
-	// 				password,
-	// 			},
-	// 		});
-
-	// 		const { id, accessToken } = result.data;
-	// 		localStorage.setItem('user_id', id);
-	// 		localStorage.setItem('accessToken', accessToken);
-	// 		this.setState({
-	// 			isLoggedIn: true,
-	// 		});
-	// 	} catch (err) {
-	// 		console.log(err.response);
-	// 		this.setState({
-	// 			authStatus: true,
-	// 			authError: err.response.data.message,
-	// 			buttonStatus: 'login',
-	// 		});
-	// 		setTimeout(() => {
-	// 			this.setState({
-	// 				authStatus: false,
-	// 				authError: '',
-	// 			});
-	// 		}, 4000);
-	// 	}
-	// };
-
 	render() {
 		const {
 			email,
@@ -209,7 +115,7 @@ class Login extends Component {
 const mapStateToProps = (state) => {
 	return {
 		email: state.login.email,
-		password: state.login.email,
+		password: state.login.password,
 		errors: state.login.errors,
 		validation: state.login.validation,
 		isValid: state.login.isValid,

@@ -1,16 +1,17 @@
 import Validator from '../../Validation/Validation';
 import apiRequest from '../../apiRequest/apiRequest';
 
-export const HANDLE_CHANGE = 'HANDLE_CHANGE';
-export const BUTTON_WAIT = 'BUTTON_WAIT';
-export const BUTTON_LOGIN = 'BUTTON_LOGIN';
-export const LOGGED_IN = 'LOGGED_IN';
-export const ERROR_ACTIVE = 'ERROR_ACTIVE';
-export const ERROR_INACTIVE = 'ERROR_INACTIVE';
+export const LOGIN_HANDLE_CHANGE = 'LOGIN_HANDLE_CHANGE';
+export const LOGIN_BUTTON_WAIT = 'LOGIN_BUTTON_WAIT';
+export const LOGIN_BUTTON_LOGIN = 'LOGIN_BUTTON_LOGIN';
+export const LOGIN_LOGGED_IN = 'LOGIN_LOGGED_IN';
+export const LOGIN_LOGGED_OUT = 'LOGIN_LOGGED_OUT';
+export const LOGIN_ERROR_ACTIVE = 'LOGIN_ERROR_ACTIVE';
+export const LOGIN_ERROR_INACTIVE = 'LOGIN_ERROR_INACTIVE';
 
 export const handleChange = (event, validationResult) => {
 	return {
-		type: HANDLE_CHANGE,
+		type: LOGIN_HANDLE_CHANGE,
 		event,
 		validationResult,
 	};
@@ -18,30 +19,35 @@ export const handleChange = (event, validationResult) => {
 
 export const buttonWait = () => {
 	return {
-		type: BUTTON_WAIT,
+		type: LOGIN_BUTTON_WAIT,
 	};
 };
 export const buttonLogin = () => {
 	return {
-		type: BUTTON_LOGIN,
+		type: LOGIN_BUTTON_LOGIN,
 	};
 };
 
 export const loggedIn = () => {
 	return {
-		type: LOGGED_IN,
+		type: LOGIN_LOGGED_IN,
+	};
+};
+export const loggedOut = () => {
+	return {
+		type: LOGIN_LOGGED_OUT,
 	};
 };
 
 export const errorActive = (err) => {
 	return {
-		type: ERROR_ACTIVE,
+		type: LOGIN_ERROR_ACTIVE,
 		err,
 	};
 };
 export const errorInActive = () => {
 	return {
-		type: ERROR_INACTIVE,
+		type: LOGIN_ERROR_INACTIVE,
 	};
 };
 

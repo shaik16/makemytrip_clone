@@ -1,136 +1,23 @@
 import React, { Component } from 'react';
-import Validator from '../Validation/Validation';
-import apiRequest from '../apiRequest/apiRequest';
 import './Signup.css';
+import { connect } from 'react-redux';
+import { validateChange } from '../store/actions/signUpAction';
+import { onSubmit } from '../store/actions/signUpAction';
 
 export class Signup extends Component {
-	state = {
-		name: '',
-		email: '',
-		password: '',
-		confirmPassword: '',
-		errors: {
-			name: '',
-			email: '',
-			password: '',
-			confirmPassword: '',
-		},
-		isValid: false,
-		validation: {
-			name: 'none',
-			email: 'none',
-			password: 'none',
-			confirmPassword: 'none',
-		},
-		authError: '',
-		authStatus: false,
-		successMessage: '',
-		successStatus: false,
-		buttonStatus: 'signup',
-	};
-
-	handleChange = async (event) => {
-		const { name, value } = event.target;
-		const { name: nameState, email, password, confirmPassword } = this.state;
-		let result;
-
-		if (name === 'confirmPassword') {
-			result = await Validator({ [name]: value, password: this.state.password });
-		} else {
-			result = await Validator({ [name]: value });
-		}
-
-		this.setState({ [name]: value }, () => {
-			if (result !== 'success') {
-				this.setState((previousState) => ({
-					errors: {
-						...previousState.errors,
-						[name]: result,
-					},
-					validation: {
-						...previousState.validation,
-						[name]: 'is-invalid',
-					},
-					isValid: false,
-				}));
-			} else {
-				this.setState((previousState) => ({
-					errors: {
-						...previousState.errors,
-						[name]: '',
-					},
-					validation: {
-						...previousState.validation,
-						[name]: 'is-valid',
-					},
-				}));
-				if (
-					nameState.length > 0 &&
-					email.length > 0 &&
-					password.length > 0 &&
-					confirmPassword.length > 0
-				) {
-					this.setState({
-						isValid: true,
-					});
-				}
-			}
-		});
-	};
-
-	handleSubmit = async (event) => {
-		try {
-			event.preventDefault();
-			this.setState({
-				buttonStatus: 'please wait ...',
-			});
-			const { name, email, password, confirmPassword } = this.state;
-			const result = await apiRequest({
-				method: 'post',
-				url: '/signup',
-				data: {
-					name,
-					email,
-					password,
-					confirmPassword,
-				},
-			});
-
-			this.setState({
-				successStatus: true,
-				successMessage: result.data.message,
-			});
-		} catch (err) {
-			console.log(err.response);
-			this.setState({
-				authStatus: true,
-				authError: err.response.data.message,
-				buttonStatus: 'signup',
-			});
-
-			setTimeout(() => {
-				this.setState({
-					authStatus: false,
-					authError: '',
-				});
-			}, 4000);
-		}
-	};
-
 	render() {
-		const { isValid, authError, authStatus, buttonStatus } = this.state;
 		const {
-			name: nameError,
-			email: emailError,
-			password: passwordError,
-			confirmPassword: confirmPasswordError,
-		} = this.state.errors;
-		const {
-			name: invalidName,
-			email: invalidEmail,
-			password: invalidPassword,
-			confirmPassword: invalidConfirmPassword,
-		} = this.state.validation;
+			name,
+			email,
+			password,
+			confirmPassword,
+			errors,
+			validation,
+			isValid,
+			buttonStatus,
+			authError,
+			authStatus,
+		} = this.props;
 
 		return (
 			<div
@@ -165,22 +52,22 @@ export class Signup extends Component {
 									style={{ display: `${authStatus ? 'block' : 'none'}` }}>
 									{authError}
 								</div>
-								<form onSubmit={this.handleSubmit}>
+								<form onSubmit={(event) => event.preventDefault()}>
 									<div className='mb-3'>
 										<label htmlFor='name' className='form-label'>
 											Name
 										</label>
 										<input
 											type='text'
-											className={`form-control  ${invalidName}`}
+											className={`form-control  ${validation.name}`}
 											id='name'
 											aria-describedby='nameHelp'
 											name='name'
 											placeholder='Enter your name'
-											onChange={this.handleChange}
+											onChange={(event) => this.props.validateChange(event, password)}
 										/>
 										<div id='nameFeedback' className='invalid-feedback'>
-											{nameError}
+											{errors.name}
 										</div>
 									</div>
 									<div className='mb-3'>
@@ -189,15 +76,15 @@ export class Signup extends Component {
 										</label>
 										<input
 											type='email'
-											className={`form-control  ${invalidEmail}`}
+											className={`form-control  ${validation.email}`}
 											id='email'
 											aria-describedby='emailHelp'
 											name='email'
 											placeholder='Enter your email'
-											onChange={this.handleChange}
+											onChange={(event) => this.props.validateChange(event, password)}
 										/>
 										<div id='emailFeedback' className='invalid-feedback'>
-											{emailError}
+											{errors.email}
 										</div>
 										<div id='emailHelp' className='form-text'>
 											We'll never share your email with anyone else.
@@ -209,14 +96,14 @@ export class Signup extends Component {
 										</label>
 										<input
 											type='password'
-											className={`form-control  ${invalidPassword}`}
+											className={`form-control  ${validation.password}`}
 											id='password'
 											name='password'
 											placeholder='Enter your password'
-											onChange={this.handleChange}
+											onChange={(event) => this.props.validateChange(event, password)}
 										/>
 										<div id='passFeedback' className='invalid-feedback'>
-											{passwordError}
+											{errors.password}
 										</div>
 									</div>
 									<div className='mb-3'>
@@ -225,18 +112,18 @@ export class Signup extends Component {
 										</label>
 										<input
 											type='password'
-											className={`form-control  ${invalidConfirmPassword}`}
+											className={`form-control  ${validation.confirmPassword}`}
 											id='confirmPassword'
 											name='confirmPassword'
 											placeholder='Re-enter your password'
-											onChange={this.handleChange}
+											onChange={(event) => this.props.validateChange(event, password)}
 										/>
 										<div id='passFeedback' className='invalid-feedback'>
-											{confirmPasswordError}
+											{errors.confirmPassword}
 										</div>
 									</div>
 									<button
-										type='submit'
+										onClick={() => this.props.submit(name, email, password, confirmPassword)}
 										className='btn btn-primary px-5'
 										disabled={isValid ? false : true}>
 										{buttonStatus}
@@ -259,4 +146,28 @@ export class Signup extends Component {
 	}
 }
 
-export default Signup;
+const mapStateToProps = (state) => {
+	return {
+		name: state.signup.name,
+		email: state.signup.email,
+		password: state.signup.password,
+		confirmPassword: state.signup.confirmPassword,
+		errors: state.signup.errors,
+		validation: state.signup.validation,
+		isValid: state.signup.isValid,
+		buttonStatus: state.signup.buttonStatus,
+		authError: state.signup.authError,
+		authStatus: state.signup.authStatus,
+		isLoggedIn: state.signup.isLoggedIn,
+	};
+};
+
+const mapDispatchToProps = (dispatch) => {
+	return {
+		validateChange: (event, password) => dispatch(validateChange(event, password)),
+		submit: (name, email, password, confirmPassword) =>
+			dispatch(onSubmit(name, email, password, confirmPassword)),
+	};
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Signup);

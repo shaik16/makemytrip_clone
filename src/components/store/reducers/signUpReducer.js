@@ -1,34 +1,40 @@
 import {
-	LOGIN_HANDLE_CHANGE,
-	LOGIN_BUTTON_WAIT,
-	LOGIN_BUTTON_LOGIN,
-	LOGIN_ERROR_ACTIVE,
-	LOGIN_ERROR_INACTIVE,
-	LOGIN_LOGGED_IN,
-	LOGIN_LOGGED_OUT,
-} from '../actions/loginAction';
+	BUTTON_SIGNUP,
+	BUTTON_WAIT,
+	ERROR_ACTIVE,
+	ERROR_INACTIVE,
+	HANDLE_CHANGE,
+	SIGNUP_SUCCESS,
+} from '../actions/signUpAction';
 
 const initialState = {
+	name: '',
 	email: '',
 	password: '',
+	confirmPassword: '',
 	errors: {
+		name: '',
 		email: '',
 		password: '',
+		confirmPassword: '',
 	},
 	isValid: false,
 	validation: {
+		name: 'none',
 		email: 'none',
 		password: 'none',
+		confirmPassword: 'none',
 	},
-	buttonStatus: 'Login',
 	authError: '',
 	authStatus: false,
-	isLoggedIn: false,
+	successMessage: '',
+	successStatus: false,
+	buttonStatus: 'signup',
 };
 
-const loginReducer = (state = initialState, action) => {
+const signUpReducer = (state = initialState, action) => {
 	switch (action.type) {
-		case LOGIN_HANDLE_CHANGE: {
+		case HANDLE_CHANGE: {
 			const { name, value } = action.event.target;
 			let newState = {
 				...state,
@@ -53,66 +59,52 @@ const loginReducer = (state = initialState, action) => {
 					...state.validation,
 					[name]: 'is-valid',
 				};
-				if (state.email.length > 0 && state.password.length > 0) {
+				if (
+					state.name.length > 0 &&
+					state.email.length > 0 &&
+					state.password.length > 0 &&
+					state.confirmPassword.length > 0
+				) {
 					newState.isValid = true;
 				}
 			}
 			return newState;
 		}
-		case LOGIN_BUTTON_WAIT:
+		case BUTTON_WAIT:
 			return {
 				...state,
 				buttonStatus: 'please wait ...',
 			};
 
-		case LOGIN_BUTTON_LOGIN:
+		case BUTTON_SIGNUP:
 			return {
 				...state,
 				buttonStatus: 'Login',
 			};
 
-		case LOGIN_ERROR_ACTIVE:
+		case ERROR_ACTIVE:
 			return {
 				...state,
 				authStatus: true,
 				authError: action.err,
 			};
 
-		case LOGIN_ERROR_INACTIVE:
+		case ERROR_INACTIVE:
 			return {
 				...state,
 				authStatus: false,
 				authError: '',
 			};
-		case LOGIN_LOGGED_IN: {
+
+		case SIGNUP_SUCCESS:
 			return {
 				...state,
-				isLoggedIn: true,
+				successStatus: true,
+				successMessage: action.message,
 			};
-		}
-		case LOGIN_LOGGED_OUT: {
-			return {
-				...state,
-				email: '',
-				password: '',
-				errors: {
-					email: '',
-					password: '',
-				},
-				isValid: false,
-				validation: {
-					email: 'none',
-					password: 'none',
-				},
-				buttonStatus: 'Login',
-				authError: '',
-				authStatus: false,
-				isLoggedIn: false,
-			};
-		}
 		default:
 			return state;
 	}
 };
 
-export default loginReducer;
+export default signUpReducer;
