@@ -21,7 +21,7 @@ class Header extends Component {
 									id='dropdownMenuButton'
 									data-bs-toggle='dropdown'
 									aria-expanded='false'>
-									User name
+									Shyam
 								</button>
 								<ul className='dropdown-menu' aria-labelledby='dropdownMenuButton'>
 									<li>
