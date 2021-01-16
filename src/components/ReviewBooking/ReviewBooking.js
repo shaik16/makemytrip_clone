@@ -4,6 +4,7 @@ import './ReviewBooking.css';
 import GeneralInstructions from '../GeneralInstructions/GeneralInstructions.js';
 
 import airplane from '../../images/aeroplane-sm.png';
+import { Link } from 'react-router-dom';
 
 export class ReviewBooking extends Component {
 	render() {
@@ -53,9 +54,11 @@ export class ReviewBooking extends Component {
 									</div>
 								</div>
 								<div className='col-lg-3'>
-									<button type='submit' className='btn btn-primary px-5 '>
-										Continue Booking
-									</button>
+									<Link to='/booking'>
+										<button type='submit' className='btn btn-primary px-5 '>
+											Continue Booking
+										</button>
+									</Link>
 								</div>
 							</div>
 						</div>

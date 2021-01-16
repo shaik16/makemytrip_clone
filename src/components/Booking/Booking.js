@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 
 export class Booking extends Component {
 	render() {
@@ -50,9 +51,11 @@ export class Booking extends Component {
 									</div>
 								</div>
 								<div className='col-lg-3'>
-									<button type='submit' className='btn btn-primary px-5 '>
-										Confirm Booking
-									</button>
+									<Link to='/booking_success'>
+										<button type='submit' className='btn btn-primary px-5 '>
+											Confirm Booking
+										</button>
+									</Link>
 								</div>
 							</div>
 						</div>
@@ -242,9 +245,11 @@ export class Booking extends Component {
 						<div className='col-lg-3 mt-5 text-center'>
 							<div className='row'>
 								<div className='col-lg-12'>
-									<button type='submit' className='btn btn-primary px-5 '>
-										Confirm Booking
-									</button>
+									<Link to='/booking_success'>
+										<button type='submit' className='btn btn-primary px-5 '>
+											Confirm Booking
+										</button>
+									</Link>
 								</div>
 							</div>
 						</div>

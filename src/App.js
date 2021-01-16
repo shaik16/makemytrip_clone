@@ -26,7 +26,7 @@ class App extends Component {
 					<Route path='/booking' component={Booking} />
 					<Route path='/booking_success' component={BookingSuccess} />
 					<Route path='/profile' component={Profile} />
-					<Route path='/mytrip' component={MyTrips} />
+					<Route path='/mytrips' component={MyTrips} />
 				</Router>
 			</div>
 		);

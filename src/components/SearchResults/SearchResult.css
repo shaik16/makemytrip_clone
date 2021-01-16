@@ -42,6 +42,10 @@ hr {
 	height: 40px;
 }
 
+.loading-body {
+	height: 70vh;
+}
+
 @media (max-width: 768px) {
 	.accordion-item {
 		width: 90%;

@@ -7,6 +7,9 @@ export const ERROR_MESSAGE = 'ERROR_MESSAGE';
 export const SEARCH_FLIGHTS = 'SEARCH_FLIGHTS';
 export const STORE_SEARCH_RESULT = 'STORE_SEARCH_RESULT';
 export const LOADING_OFF = 'LOADING_OFF';
+export const DISPLAY_ALERT = 'DISPLAY_ALERT';
+export const TO_LOCATION = 'TO_LOCATION';
+export const FROM_LOCATION = 'FROM_LOCATION';
 
 export const searchHandleChange = (event) => {
 	return {
@@ -67,6 +70,13 @@ export const loadingOff = () => {
 	};
 };
 
+export const displayAlert = (message) => {
+	return {
+		type: DISPLAY_ALERT,
+		message,
+	};
+};
+
 export const searchFlights = (from, to, date) => {
 	return async (dispatch) => {
 		try {
@@ -82,7 +92,49 @@ export const searchFlights = (from, to, date) => {
 			dispatch(storeSearchResult(result.data));
 			dispatch(loadingOff());
 		} catch (err) {
-			console.log(err.response);
+			dispatch(displayAlert(err.response.data.message));
+			dispatch(loadingOff());
+		}
+	};
+};
+
+export const setToLocation = (city) => {
+	return {
+		type: TO_LOCATION,
+		city,
+	};
+};
+
+export const toLocation = (id) => {
+	return async (dispatch) => {
+		try {
+			const result = await apiRequest({
+				method: 'get',
+				url: `/location/${id}`,
+			});
+			dispatch(result.data.city);
+		} catch (err) {
+			console.log(err);
+		}
+	};
+};
+export const setFromLocation = (city) => {
+	return {
+		type: TO_LOCATION,
+		city,
+	};
+};
+
+export const fromLocation = (id) => {
+	return async (dispatch) => {
+		try {
+			const result = await apiRequest({
+				method: 'get',
+				url: `/location/${id}`,
+			});
+			dispatch(result.data.city);
+		} catch (err) {
+			console.log(err);
 		}
 	};
 };

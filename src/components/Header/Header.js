@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 import { loggedOut } from '../store/actions/loginAction';
 
 class Header extends Component {
@@ -8,9 +9,9 @@ class Header extends Component {
 		return (
 			<nav className='navbar sticky-top navbar-light bg-light'>
 				<div className='container'>
-					<a className='navbar-brand' href='/'>
+					<Link to='/' className='navbar-brand'>
 						<img src={`${process.env.PUBLIC_URL}/logo.png`} alt='logo' width='120' height='40' />
-					</a>
+					</Link>
 					<div className='d-flex'>
 						{this.props.isLoggedIn ? (
 							<div className='dropdown ms-2'>
@@ -24,14 +25,14 @@ class Header extends Component {
 								</button>
 								<ul className='dropdown-menu' aria-labelledby='dropdownMenuButton'>
 									<li>
-										<a className='dropdown-item' href='.'>
+										<Link to='/profile' className='dropdown-item' href='.'>
 											My Profile
-										</a>
+										</Link>
 									</li>
 									<li>
-										<a className='dropdown-item' href='.'>
+										<Link to='/mytrips' className='dropdown-item' href='.'>
 											My Trips
-										</a>
+										</Link>
 									</li>
 									<li>
 										<p className='dropdown-item' role='button' onClick={this.props.loggedOut}>

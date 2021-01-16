@@ -3,16 +3,26 @@ import './SearchResult.css';
 import arrowIcon from '../../images/right-arrow.png';
 import checkedIcon from '../../images/checked.png';
 import { connect } from 'react-redux';
-import { searchFlights, searchHandleChange } from '../store/actions/searchAction';
+import {
+	fromLocation,
+	searchFlights,
+	searchHandleChange,
+	toLocation,
+} from '../store/actions/searchAction';
+import { selectBooking } from '../store/actions/bookingAction';
+import { Link } from 'react-router-dom';
 
 export class SearchResults extends Component {
 	componentDidMount() {
 		this.props.searchFlights(this.props.from, this.props.to, this.props.date);
+		this.props.fromLocation(this.props.from);
+		this.props.toLocation(this.props.to);
 	}
 
 	render() {
+		console.log(this.props.fromLocation);
 		return (
-			<div className='search-result-section bg-light'>
+			<div className='search-result-section  bg-light'>
 				<div className='search-head pt-2 pb-3'>
 					<div className='container'>
 						<div className='row'>
@@ -96,7 +106,7 @@ export class SearchResults extends Component {
 				</div>
 
 				{this.props.loading ? (
-					<center>
+					<center className='loading-body'>
 						<img
 							className='text-center'
 							src='https://media.giphy.com/media/KyHbwcCQv3UxjzjeGw/giphy.gif'
@@ -106,8 +116,18 @@ export class SearchResults extends Component {
 						/>
 					</center>
 				) : (
-					<div className='container search-body bg-light'>
+					<div className='container search-body h-100 bg-light'>
+						<div
+							className='alert alert-primary'
+							style={{ display: `${this.props.alertStatus ? 'block' : 'none'}` }}
+							role='alert'>
+							<h4 className='alert-heading'>OOPS!</h4>
+							<p>{this.props.alertMessage}</p>
+							<hr />
+							<p className='mb-0'>Check with different dates</p>
+						</div>
 						{this.props.searchResult.map((obj, index) => {
+							console.log(obj.classPrices);
 							return (
 								<>
 									<div className='accordion-item search-item'>
@@ -138,12 +158,12 @@ export class SearchResults extends Component {
 													<div className='col-lg-2 col-sm-3 d-none d-sm-block'>
 														<div className='departure-time'>
 															<h5>{obj.departure_time}</h5>
-															<p>{this.props.from}</p>
+															<p>Kolkata</p>
 														</div>
 													</div>
 													<div className='col-lg-2 col-sm-3 d-none d-sm-block'>
 														<div className='duration'>
-															<p>{obj.flightDuration} mins</p>
+															<p>{obj.flightDuration}</p>
 															<hr />
 															<p>Non-stop </p>
 														</div>
@@ -151,7 +171,7 @@ export class SearchResults extends Component {
 													<div className='col-lg-2 col-sm-2 d-none d-sm-block'>
 														<div className='arrival-time'>
 															<h5>{obj.arrival_time}</h5>
-															<p>{this.props.to}</p>
+															<p>Bangalore</p>
 														</div>
 													</div>
 													<div className='col-lg-2 d-none'></div>
@@ -169,7 +189,7 @@ export class SearchResults extends Component {
 													<div className='row mb-4 d-lg-none d-xl-block d-md-none d-lg-block d-sm-none d-xl-none text-center'>
 														<div className='col-4'>
 															<h5>{obj.departure_time}</h5>
-															<p>{this.props.from}</p>
+															<p>{this.props.fromLocation}</p>
 														</div>
 														<div className='col-3'>
 															<img
@@ -183,14 +203,14 @@ export class SearchResults extends Component {
 														<div className='col-5'>
 															<div className='arrival-time'>
 																<h5>{obj.arrival_time}</h5>
-																<p>{this.props.to}</p>
+																<p>Bengaluru</p>
 															</div>
 														</div>
 													</div>
 													<div className='row mb-4 d-lg-none d-xl-block d-md-none d-lg-block d-sm-none d-xl-none'>
 														<div className='col-12 text-center'>
 															<div className='duration'>
-																<p>{obj.flightDuration} mins</p>
+																<p>{obj.flightDuration}</p>
 																<hr />
 																<p>Non-stop </p>
 															</div>
@@ -235,11 +255,23 @@ export class SearchResults extends Component {
 																</div>
 																<div className='col-md-2'>
 																	<h2 className='pt-2 text-center'>
-																		<strong> &#8377; {obj.price}</strong>
+																		<strong> &#8377; {obj.classPrices['Economy Class']}</strong>
 																	</h2>
 																</div>
 																<div className='col-md-4 text-center pt-3'>
-																	<button className='btn btn-primary book-now'>BOOK NOW</button>
+																	<Link to='/review'>
+																		<button
+																			className='btn btn-primary book-now'
+																			onClick={() =>
+																				this.props.selectBooking(
+																					obj,
+																					obj.classPrices['Economy Class'],
+																					'Economy Class'
+																				)
+																			}>
+																			BOOK NOW
+																		</button>
+																	</Link>
 																</div>
 															</div>
 														</div>
@@ -284,11 +316,23 @@ export class SearchResults extends Component {
 																</div>
 																<div className='col-md-2'>
 																	<h2 className='pt-2 text-center'>
-																		<strong> &#8377; 10,665</strong>
+																		<strong> &#8377; {obj.classPrices['First Class']}</strong>
 																	</h2>
 																</div>
 																<div className='col-md-4 text-center pt-3'>
-																	<button className='btn btn-primary book-now'>BOOK NOW</button>
+																	<Link to='/review'>
+																		<button
+																			className='btn btn-primary book-now'
+																			onClick={() =>
+																				this.props.selectBooking(
+																					obj,
+																					obj.classPrices['First Class'],
+																					'Business Class'
+																				)
+																			}>
+																			BOOK NOW
+																		</button>
+																	</Link>
 																</div>
 															</div>
 														</div>
@@ -318,6 +362,10 @@ const mapStateToProps = (state) => {
 		error: state.search.error,
 		searchResult: state.search.searchResult,
 		loading: state.search.loading,
+		alertStatus: state.search.alertStatus,
+		alertMessage: state.search.alertMessage,
+		fromLocation: state.search.fromLocation,
+		toLocation: state.search.toLocation,
 	};
 };
 
@@ -325,6 +373,9 @@ const mapDispatchToProps = (dispatch) => {
 	return {
 		searchHandleChange: (event) => dispatch(searchHandleChange(event)),
 		searchFlights: (from, to, date) => dispatch(searchFlights(from, to, date)),
+		selectBooking: (obj, price, flightClass) => dispatch(selectBooking(obj, price, flightClass)),
+		fromLocation: (id) => dispatch(fromLocation(id)),
+		toLocation: (id) => dispatch(toLocation(id)),
 	};
 };
 
